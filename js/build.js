@@ -166,13 +166,12 @@ Fliplet.Widget.instance({
       function logAiCall(data) {
         return Fliplet.App.Logs.create({
           data: {
-            type: "ai.code.feature",
             data: data,
             userId: userId,
             appId: appId,
-            organizationId: organizationId
-          }
-        });
+            organizationId: organizationId,
+          },
+        }, "ai.feature.component");
       }
 
       function updateCodeWithinDelimiters(type, newCode, oldCode = "") {

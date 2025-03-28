@@ -1116,6 +1116,50 @@ connection.find({
     }
   }
 })
+
+## Send an email
+
+Use our APIs to send an email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
+
+Available options:
+
+  - "to": array of recipients for "to", "cc" or "bcc"
+  - "subject": subject of the email
+  - "from_name": the sender's name
+  - "html": HTML string for the email body
+  - "headers": "key:value" object with headers to add to the email (most headers are allowed). We recommend using "X-*" prefixes to any custom header, e.g. "X-My-Custom-Header: "value"
+  - "attachments": array of attachments with "type" (the MIME type), "content" (String or Buffer), "name" (the filename including extension) and optional "encoding" (base64, hex, binary, etc)
+  - "required": Set to "true" to queue the request if the device is offline. When the device comes online, the queued requests will be sent. Default: "false"
+
+var options = {
+  to: [
+    { email: "john@example.org", name: "John", type: "to" },
+    { email: "jane@example.org", name: "Jane", type: "cc" }
+  ],
+  html: "<p>Some HTML content</p>",
+  subject: "My subject",
+  from_name: "Example Name",
+  headers: {
+    "Reply-To": "message.reply@example.com"
+  },
+  attachments: [
+    {
+      type: "text/plain",
+      name: "myfile.txt",
+      content: "Hello World"
+    },
+    {
+      type: "image/png",
+      name: "test.png",
+      encoding: 'base64',
+      // You can use our JS API to encode your content string to base64
+      content: Fliplet.Encode.base64("hello world")
+    }
+  ]
+};
+
+// Returns a promise
+Fliplet.Communicate.sendEmail(options);
 `;
 
   return Fliplet.AI.createCompletion({
